@@ -325,6 +325,15 @@ for path in pairs(scan()) do
   end
   navbar = navbar == "" and "" or navbar .. '</div>'
 
+  -- load custom head
+  if config.head then
+    local file = io.open(config.head, "rb")
+    head = file:read("*all")
+    file:close()
+  else
+    head = ""
+  end
+
   -- write all contents
   website = string.gsub(website, "%%%%basepath%%%%", escape(basepath))
   website = string.gsub(website, "%%%%pagesuffix%%%%", escape(pagesuffix))
@@ -333,6 +342,7 @@ for path in pairs(scan()) do
   website = string.gsub(website, "%%%%sidebar%%%%", escape(sidebar))
   website = string.gsub(website, "%%%%navbar%%%%", escape(navbar))
   website = string.gsub(website, "%%%%page%%%%", escape(page))
+  website = string.gsub(website, "%%%%head%%%%", escape(head))
 
   -- write new generated website
   local out = io.open(config.www .. path .. "/index.html", "w")
